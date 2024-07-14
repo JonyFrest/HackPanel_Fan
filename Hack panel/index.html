@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description"
+            content="Explore JonyFrest's portfolio featuring web development projects and skills. This is a hacker panel for jokes in English and Russian. Познакомьтесь с портфолио JonyFrest, включающим проекты и навыки веб-разработки. Это хакерская панель для шуток на английском и русском языках.">
+        <meta name="robots" content="index, follow">
+        <title>Hack Panel For Fan</title>
+        <style>
+        body {
+            background-color: black;
+            color: #00FF00;
+            font-family: monospace;
+            margin: 0;
+            padding: 20px;
+            overflow: hidden;
+            font-size: 30px; /* Начальный размер шрифта */
+        }
+
+        #textOutput {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            position: relative;
+        }
+
+        .gray-text {
+            color: #808080;
+        }
+
+        #loading {
+            display: none;
+        }
+
+        #cursor {
+            display: inline-block;
+            width: 10px;
+            background-color: #00FF00;
+            animation: blink 1s step-start infinite;
+        }
+
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        #loading::after {
+    content: '|';
+    animation: loading 1s linear infinite;
+}
+
+    @keyframes loading {
+       0% { content: '|'; }
+        25% { content: '/'; }
+    50% { content: '-'; }
+    75% { content: '\\'; }
+}
+
+        @media (max-width: 1199px) {
+            body {
+                padding: 15px;
+                font-size: 24px;
+            }
+        }
+
+        @media (max-width: 991px) {
+            body {
+                padding: 10px;
+                font-size: 20px;
+            }
+        }
+
+        @media (max-width: 767px) {
+            body {
+                padding: 5px;
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 575px) {
+            body {
+                padding: 2px;
+                font-size: 12px;
+            }
+        }
+    </style>
+    </head>
+    <body>
+        <div id="textOutput"><span id="textContent"></span><span
+                id="cursor"></span></div>
+        <div id="loading">Loading</div>
+
+        <script>
+        const textOutput = document.getElementById('textOutput');
+        const textContent = document.getElementById('textContent');
+        const loading = document.getElementById('loading');
+        const cursor = document.getElementById('cursor');
+        let text = '';
+
+        const isAllowedKey = (key) => {
+            const allowedKeys = /^[a-zA-Z0-9\s_\-\+\=\[\]\{\}\(\)\/\\\<\>\~\:\;\"\'\|\`\!\@\#\$\%\^\&\*\?\.\,]$/;
+            return allowedKeys.test(key);
+        };
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                textContent.innerHTML += `<span class="gray-text">${text}</span>\n`;
+                text = '';
+                loading.style.display = 'block';
+                cursor.style.display = 'none';
+                setTimeout(() => {
+                    loading.style.display = 'none';
+                    textContent.innerHTML += 'COMPLETED\n\n';
+                    cursor.style.display = 'inline-block';
+                }, 2000);
+            } else if (event.key === 'Backspace') {
+                text = text.slice(0, -1);
+                textContent.textContent = text;
+            } else if (isAllowedKey(event.key)) {
+                text += event.key;
+                textContent.textContent = text;
+            }
+        });
+
+        document.addEventListener('mouseup', () => {
+            const selection = window.getSelection();
+            if (selection.toString().length > 0) {
+                document.execCommand('copy');
+            }
+        });
+    </script>
+    </body>
+</html>
